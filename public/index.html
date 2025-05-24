@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timestamp Microservice</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Timestamp Microservice</h1>
+        <hr>
+        <p>
+            This API endpoint converts date strings or Unix timestamps to a JSON object
+            containing both the Unix timestamp (in milliseconds) and the UTC date string.
+        </p>
+        
+        <h2>Usage Examples:</h2>
+        <ul>
+            <li><a href="/api/2015-12-25"><code>/api/2015-12-25</code></a></li>
+            <li><a href="/api/1451001600000"><code>/api/1451001600000</code></a> (Unix timestamp in ms)</li>
+            <li><a href="/api/"><code>/api/</code></a> (current time)</li>
+            <li><a href="/api/invalid-date-string"><code>/api/invalid-date-string</code></a> (invalid date)</li>
+        </ul>
+
+        <h2>Try it out:</h2>
+        <div class="form-group">
+            <label for="dateInput">Enter a date string or Unix timestamp (ms):</label>
+            <input type="text" id="dateInput" placeholder="e.g., 2023-10-26 or 1666742400000">
+            <button id="submitBtn">Get Timestamp</button>
+        </div>
+        
+        <h3>API Response:</h3>
+        <pre id="responseArea"><code>{}</code></pre>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
