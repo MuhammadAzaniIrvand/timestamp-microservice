@@ -1,66 +1,68 @@
 // server.js
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
-
 const app = express();
+app.use(express.static('public')); // Serves static files from the 'public' directory
+// Basic Configuration
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors({ optionsSuccessStatus: 200 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({ optionsSuccessStatus: 200 })); // Enables CORS for all routes
+app.use(express.static('public')); // Serves static files from the 'public' directory (for style.css)
 
-// Helper function to process the date input and create the response object
-const createTimestampResponse = (dateInput) => {
+// Route for the landing page
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + '/views/index.html');
+});
+
+// API endpoint for date processing
+// The '?' makes the 'date' parameter optional
+app.get("/api/:date?", (req, res) => {
+  let dateInput = req.params.date;
   let date;
 
   if (!dateInput) {
-    // No date provided, use current time
+    // If no date parameter is provided, use the current time
+    // Requirement 7 & 8
     date = new Date();
   } else {
-    // Check if input is a number (potential Unix timestamp in milliseconds)
+    // Check if the input is a string of numbers (potential Unix timestamp)
+    // Requirement 4
     if (/^\d+$/.test(dateInput)) {
-      date = new Date(parseInt(dateInput, 10)); // Added radix 10 for parseInt
+      date = new Date(parseInt(dateInput));
     } else {
-      // Try to parse as a date string
+      // Try to parse as a regular date string
+      // Requirement 5
       date = new Date(dateInput);
     }
   }
 
-  // Check if the date is valid
-  if (isNaN(date.getTime())) {
-    return { error: "Invalid Date" };
+  // Check if the constructed date is valid
+  // Requirement 6
+  if (isNaN(date.getTime())) { // or date.toString() === "Invalid Date"
+    res.json({ error: "Invalid Date" });
   } else {
-    return {
-      unix: date.getTime(),
-      utc: date.toUTCString()
-    };
+    // If valid, return the JSON response
+    // Requirement 2 & 3
+    res.json({
+      unix: date.getTime(),       // Unix timestamp in milliseconds (Number)
+      utc: date.toUTCString()     // UTC date string (e.g., "Thu, 01 Jan 1970 00:00:00 GMT")
+    });
   }
-};
-
-// API endpoint for requests to /api/ (handles current time)
-app.get('/api', (req, res) => { // Handles requests like localhost:3000/api or localhost:3000/api/
-  const responseObject = createTimestampResponse(null); // Pass null to indicate current time
-  res.json(responseObject);
 });
-// Note: some setups might require '/api/' to specifically match the trailing slash
-// but Express is generally good at handling this. If you have issues, try app.get('/api/', ...)
+// In views/index.html or linked script.js
+function submitDate() {
+    const dateValue = document.getElementById('dateInput').value;
+    if (dateValue) {
+        window.location.href = '/api/' + encodeURIComponent(dateValue);
+    } else {
+        // Optionally handle empty input or redirect to /api/ for current time
+        window.location.href = '/api/';
+    }
+}
 
-// API endpoint for requests with a date parameter (e.g., /api/2015-12-25)
-app.get('/api/:date_string', (req, res) => {
-  const dateString = req.params.date_string;
-  const responseObject = createTimestampResponse(dateString);
-  res.json(responseObject);
-});
-
-
-// Serve the index.html for the root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Start server
+// Listen for requests
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-  console.log(`Access the app at http://localhost:${port}`);
+  console.log(`Your app is listening on port ${port}`);
+  console.log(`Access it at http://localhost:${port}`);
 });

@@ -4,36 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timestamp Microservice</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <div class="container">
         <h1>Timestamp Microservice</h1>
-        <hr>
+        <hr />
+
+        <h3>Try it out:</h3>
+        <div class="form-container">
+            <input type="text" id="dateInput" placeholder="Enter a date or Unix timestamp">
+            <button onclick="getTimestamp()">Get Timestamp</button>
+        </div>
+        <div id="result-container">
+            <h4>API Response:</h4>
+            <pre id="result"></pre> <!-- We'll put the JSON response here -->
+        </div>
+        <hr />
+
         <p>
-            This API endpoint converts date strings or Unix timestamps to a JSON object
-            containing both the Unix timestamp (in milliseconds) and the UTC date string.
+            This API allows you to get the Unix timestamp (in milliseconds) and the UTC date string for a given date.
         </p>
-        
-        <h2>Usage Examples:</h2>
+        <h3>Example Usage (Direct API links):</h3>
+        <p>Pass a date string or a Unix timestamp (in milliseconds) to the <code>/api/:date?</code> endpoint.</p>
         <ul>
-            <li><a href="/api/2015-12-25"><code>/api/2015-12-25</code></a></li>
-            <li><a href="/api/1451001600000"><code>/api/1451001600000</code></a> (Unix timestamp in ms)</li>
-            <li><a href="/api/"><code>/api/</code></a> (current time)</li>
-            <li><a href="/api/invalid-date-string"><code>/api/invalid-date-string</code></a> (invalid date)</li>
+            <li><a href="api/2015-12-25" target="_blank">[project url]/api/2015-12-25</a></li>
+            <li><a href="api/1451001600000" target="_blank">[project url]/api/1451001600000</a></li>
+            <li><a href="api/" target="_blank">[project url]/api/</a> (for the current time)</li>
         </ul>
 
-        <h2>Try it out:</h2>
-        <div class="form-group">
-            <label for="dateInput">Enter a date string or Unix timestamp (ms):</label>
-            <input type="text" id="dateInput" placeholder="e.g., 2023-10-26 or 1666742400000">
-            <button id="submitBtn">Get Timestamp</button>
-        </div>
-        
-        <h3>API Response:</h3>
-        <pre id="responseArea"><code>{}</code></pre>
+        <h3>Example Output:</h3>
+        <p>
+            For a valid date: <code>{"unix":1451001600000, "utc":"Fri, 25 Dec 2015 00:00:00 GMT"}</code>
+        </p>
+        <p>
+            If the input date string is invalid: <code>{"error":"Invalid Date"}</code>
+        </p>
+    </div>
+    <div class="footer">
+        <p>
+            A freeCodeCamp Backend Development and APIs project.
+        </p>
     </div>
 
-    <script src="script.js"></script>
+    <script src="/script.js"></script> <!-- Link to our new JavaScript file -->
 </body>
 </html>
